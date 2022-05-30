@@ -14,8 +14,8 @@ function login() {
                     Entrar
                 </Typography>
 
-                {/* <TextField value={ userLogin.usuario } onChange={ (e: ChangeEvent<HTMLInputElement>) => updatedModel(e) } id='usuario' label='Usuário' variant='outlined' name='usuario' margin='normal' fullWidth /> */}
-                {/* <TextField value={ userLogin.senha } onChange={ (e: ChangeEvent<HTMLInputElement>) => updatedModel(e) } id='senha' label='Senha' variant='outlined' name='senha' margin='normal' type='password' fullWidth /> */}
+                 <TextField id='usuario' label='Usuário' variant='outlined' name='usuario' margin='normal' fullWidth /> 
+                <TextField id='senha' label='Senha' variant='outlined' name='senha' margin='normal' type='password' fullWidth /> 
                 
                 <Box marginTop={2} textAlign='center'>
                     <Button type='submit' variant='contained' color='primary'>
@@ -27,7 +27,7 @@ function login() {
             <Box display='flex' justifyContent='center' marginTop={2}>
                 <Box marginRight={1}>
                     <Typography variant='subtitle1' gutterBottom align='center'>Não tem uma conta?</Typography>
-                </Box>
+                </Box>   
                 <Link to='/cadastro'>
                     <Typography variant='subtitle1' gutterBottom align='center' className='textos1'>
                         Cadastre-se
@@ -37,7 +37,7 @@ function login() {
 
         </Box>
     </Grid>
-    <Grid xs={6} className="imagem">
+    <Grid xs={6} className='imagem'>
     </Grid>
 </Grid>
   )
