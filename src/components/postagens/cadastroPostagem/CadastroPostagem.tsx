@@ -29,6 +29,7 @@ function CadastroPostagem() {
         tema: null
     })
 
+    //Verifica se o token é vazio
     useEffect(() => {
         if (token === "") {
             alert("Você precisa estar logado")
@@ -36,6 +37,7 @@ function CadastroPostagem() {
         }
     }, [token])
 
+        //Verifica mudança no tema para reatualizar ou recriar a postagem
     useEffect(() => {
         setPostagem({
             ...postagem,
@@ -43,9 +45,10 @@ function CadastroPostagem() {
         })
     }, [tema])
 
+    //Verifica o id e chama o gettemas que busca todos os temas e verifica se o id é diferente de indefinido ou se existe.
     useEffect(() => {
         getTemas()
-        if (id !== '') {
+        if (id !== undefined) {
             findByIdPostagem(id)
         }
     }, [id])
@@ -117,7 +120,7 @@ function CadastroPostagem() {
                     <Select
                         labelId="demo-simple-select-helper-label"
                         id="demo-simple-select-helper"
-                                                    onChange={(e) => buscaId(`/tema/${e.target.value}`, setTema, {
+                            onChange={(e) => buscaId(`/temas/${e.target.value}`, setTema, {
                             headers: {
                                 'Authorization': token
                             }
