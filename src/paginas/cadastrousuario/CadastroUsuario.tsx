@@ -4,7 +4,7 @@ import { Grid, Typography, Box, Button, TextField } from '@material-ui/core';
 import { Link, useNavigate } from 'react-router-dom';
 import { cadastroUsuario } from '../../services/Service';
 import User from '../../models/User';
-
+import { toast } from 'react-toastify';
 
 
 function CadastroUsuario() {
@@ -54,18 +54,44 @@ function CadastroUsuario() {
      if (confirmarSenha === user.senha && user.senha.length>= 8){
       try {
         await cadastroUsuario('/usuarios/cadastrar', user, setUserResult)
-        alert('Usuario cadastrado com sucesso')
-
+        toast.success('Usuario cadastrado com sucesso', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          theme: "colored",
+          progress: undefined,
+          });
         //Se houver erro, pegue o Erro e retorna uma msg
       } catch (Error) {
        console.log('Error: ${error}')
 
         //Pode modificar a msg de acordo com o erro
-        alert("Erro ao cadastrar o Usuário")
+        toast.error("Usuário já existente", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: "colored",
+        progress: undefined,
+        });
       }
     } else {
-      alert('Senha deve ter 8 caracteres. Verifique as informações de cadastro')
-
+     
+      toast.error('Senha deve ter 8 caracteres. Verifique as informações de cadastro', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: "colored",
+        progress: undefined,
+        });
       // setUser({ ...user, senha: "" })//Reinicia o campo senha
       // setConfirmarSenha("")
     }

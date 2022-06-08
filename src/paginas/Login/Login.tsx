@@ -1,18 +1,20 @@
 import React, { ChangeEvent, useState, useEffect } from 'react'
 import { Box, Button, Grid, TextField, Typography } from '@material-ui/core'
 import { Link, useNavigate } from 'react-router-dom';
-import useLocalStorage from 'react-use-localstorage';
+import { useDispatch } from 'react-redux';
 
 import { login } from '../../services/Service';
 import UserLogin from '../../models/UserLogin';
+import { addId, addToken } from '../../store/tokens/action';
+import { toast } from 'react-toastify';
+
 
 import './Login.css';
 
 function Login() {
-
     let navigate = useNavigate()
-
-    const [token, setToken] = useLocalStorage('token')
+    const dispatch = useDispatch()
+    const [token, setToken] = useState('')
 
     const [userLogin, setUserLogin] = useState<UserLogin>({
         id: 0,
@@ -22,9 +24,19 @@ function Login() {
         foto: "",
         token: ""
     })
+     // Crie mais um State para pegar os dados retornados a API
+     const [respUserLogin, setRespUserLogin] = useState<UserLogin>({
+        id: 0,
+        nome: '',
+        usuario: '',
+        senha: '',
+        token: '',
+        foto: ""
+    })
 
     useEffect(() => {
         if(token !== ""){
+            dispatch(addToken(token))
             navigate('/home')
         }
     }, [token])
@@ -36,15 +48,47 @@ function Login() {
         })
     }
 
+    useEffect(() => {
+        if (respUserLogin.token !== "") {
+
+            // Verifica os dados pelo console (Opcional)
+            console.log("Token: " + respUserLogin.token)
+            console.log("ID: " + respUserLogin.id)
+
+            // Guarda as informações dentro do Redux (Store)
+            dispatch(addToken(respUserLogin.token))
+            dispatch(addId(respUserLogin.id.toString()))    // Faz uma conversão de Number para String
+            navigate('/home')
+        }
+    }, [respUserLogin.token])
     async function onSubmit(e: ChangeEvent<HTMLFormElement>){
         e.preventDefault()
 
-        try {
-            await login(`/usuarios/logar`, userLogin, setToken)
-            alert("Usuário logado com sucesso")
-
+        try { 
+            /* Se atente para a Rota de Logar, e também substitua o método
+        setToken por setRespUserLogin */
+            await login(`/usuarios/logar`, userLogin, setRespUserLogin)
+            toast.success('Usuário logado com sucesso!', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                theme: "colored",
+                progress: undefined,
+                });
         } catch (error) {
-            alert("Dados do usuário inconsistentes")
+            toast.error('Dados do usuário inconsistentes. Erro ao logar!', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                theme: "colored",
+                progress: undefined,
+                });
         }
     }
 

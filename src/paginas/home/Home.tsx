@@ -4,16 +4,29 @@ import  {Typography, Box, Grid, Button} from '@material-ui/core';
 import TabPostagem from '../../components/postagens/tabpostagem/TabPostagem';
 import ModalPostagem from '../../components/postagens/modalPostagem/ModalPostagem';
 import {useNavigate} from 'react-router';
-import useLocalStorage from 'react-use-localstorage';
+import { useSelector } from 'react-redux'
+import { UserState } from '../../store/tokens/userReducer'
+import { toast } from 'react-toastify';
 
 function Home() {
   let navigate = useNavigate();
-  const [token, setToken] = useLocalStorage('token');
-  
+
+  const token = useSelector<UserState, UserState["tokens"]>(
+    (state) => state.tokens
+  )  
   useEffect(() => {
     if (token == "") {
-        alert("Você precisa estar logado")
-        navigate("/login")
+      toast.error('Você precisa estar logado', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: "colored",
+        progress: undefined,
+    });
+      navigate("/login")
 
     }
 }, [token])
