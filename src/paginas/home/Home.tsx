@@ -47,8 +47,8 @@ function Home() {
           </Box>
         </Grid>
         <Grid item xs={6} >
-          {/* <img src="![eu (2)](https://user-images.githubusercontent.com/86638927/172405883-56414dcd-ca63-4bdc-a0e1-f86de989822e.jpeg)" alt="" width="500px" height="500px" /> */}
-          <img src="https://i.imgur.com/H88yIo2.png" alt="" width="500px" height="500px" />
+           <img src="https://user-images.githubusercontent.com/86638927/172405883-56414dcd-ca63-4bdc-a0e1-f86de989822e.jpeg" alt="" width="500px" height="500px" /> 
+          {/* <img src="https://i.imgur.com/H88yIo2.png" alt="" width="500px" height="500px" /> */}
         </Grid>
         <Grid xs={12} className='postagens'>
           <TabPostagem/>

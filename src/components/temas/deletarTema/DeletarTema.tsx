@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {Box, Card, CardActions, CardContent, Button, Typography} from '@material-ui/core';
 import './DeletarTema.css';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import {UserState} from '../../../store/tokens/userReducer'
 import { buscaId, deleteId } from '../../../services/Service';
@@ -41,16 +41,18 @@ function DeletarTema() {
     }, [id])
 
     async function findById(id: string) {
-        buscaId(`/tema/${id}`, setTema, {
+        await buscaId(`/temas/${id}`, setTema, {
             headers: {
               'Authorization': token
             }
           })
         }
 
-        function sim() {
+       async function sim() {
             navigate('/temas')
-            deleteId(`/tema/${id}`, {
+
+            try{
+            await deleteId(`/temas/${id}`, {
               headers: {
                 'Authorization': token
               }
@@ -65,6 +67,11 @@ function DeletarTema() {
               theme: "colored",
               progress: undefined,
               });
+            } catch (error) {
+              alert('Erro ao deletar');
+          }
+  
+    
                       }
         
           function nao() {

@@ -29,12 +29,12 @@ function App() {
       <Route path="/cadastrousuario" element={<CadastroUsuario />} />
       <Route path="/temas" element={<ListaTema />} />
       <Route path="/posts" element={<ListaPostagem />} />
-      <Route path="/formularioPostagem/: id" element={<CadastroPostagem/>} /> 
+      <Route path="/formularioPostagem/:id" element={<CadastroPostagem/>} /> 
       <Route path="/formularioPostagem" element={<CadastroPostagem />} /> 
-      <Route path="/formularioTema/: id" element={<CadastroTema/>} /> 
+      <Route path="/formularioTema/:id" element={<CadastroTema/>} /> 
       <Route path="/formularioTema" element={<CadastroTema />} /> 
-      <Route path="/deletarPostagem/: id" element={<DeletarPostagem />} /> 
-       <Route path="/deletarTema/: id" element={<DeletarTema />} />  
+      <Route path="/deletarPostagem/:id" element={<DeletarPostagem />} /> 
+       <Route path="/deletarTema/:id" element={<DeletarTema />} />  
       </Routes>
       </div>
       <Footer />

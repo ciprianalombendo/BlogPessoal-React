@@ -1,11 +1,15 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import { Container, Typography, TextField, Button, Select, InputLabel, MenuItem, FormControl, FormHelperText } from "@material-ui/core"
-import './CadastroPostagem.css';
-import { useNavigate, useParams } from 'react-router-dom';
-import Tema from '../../../models/Tema';
-import useLocalStorage from 'react-use-localstorage';
-import Postagem from '../../../models/Postagem';
+import { Button, Container, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField, Typography } from '@material-ui/core'
+import { useNavigate, useParams } from 'react-router-dom'
+
+import { useSelector } from 'react-redux';
+import { UserState } from '../../../store/tokens/userReducer';
+
 import { busca, buscaId, post, put } from '../../../services/Service';
+import Tema from '../../../models/Tema'
+import Postagem from '../../../models/Postagem'
+import {toast} from 'react-toastify';
+import './CadastroPostagem.css'
 
 function CadastroPostagem() {
 
@@ -15,7 +19,9 @@ function CadastroPostagem() {
 
     const [temas, setTemas] = useState<Tema[]>([])
 
-    const [token, setToken] = useLocalStorage('token')
+    const token = useSelector<UserState, UserState["tokens"]>(
+        (state) => state.tokens
+    )
 
     const [tema, setTema] = useState<Tema>({
         id: 0,
@@ -29,15 +35,22 @@ function CadastroPostagem() {
         tema: null
     })
 
-    //Verifica se o token é vazio
     useEffect(() => {
         if (token === "") {
-            alert("Você precisa estar logado")
+            toast.error('Você precisa estar logado', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                theme: "colored",
+                progress: undefined,
+            });
             navigate("/login")
         }
     }, [token])
 
-        //Verifica mudança no tema para reatualizar ou recriar a postagem
     useEffect(() => {
         setPostagem({
             ...postagem,
@@ -45,7 +58,6 @@ function CadastroPostagem() {
         })
     }, [tema])
 
-    //Verifica o id e chama o gettemas que busca todos os temas e verifica se o id é diferente de indefinido ou se existe.
     useEffect(() => {
         getTemas()
         if (id !== undefined) {
@@ -81,24 +93,47 @@ function CadastroPostagem() {
         e.preventDefault()
 
         if (id !== undefined) {
+            try {
+                await put(`/postagens`, postagem, setPostagem, {
+                    headers: {
+                        'Authorization': token
+                    }
+                })
+                toast.success('Postagem atualizada com sucesso', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: false,
+                    theme: "colored",
+                    progress: undefined,
+                });
 
-            await put(`/postagens`, postagem, setPostagem, {
-                headers: {
-                    'Authorization': token
-                }
-            })
-            alert('Postagem atualizada com sucesso');
-
+            } catch (error) {
+                alert("Erro ao atualizar, verifique os campos")
+            }
 
         } else {
-
-            await post(`/postagens`, postagem, setPostagem, {
-                headers: {
-                    'Authorization': token
-                }
-            })
-            alert('Postagem cadastrada com sucesso');
-
+            try {
+                await post(`/postagens`, postagem, setPostagem, {
+                    headers: {
+                        'Authorization': token
+                    }
+                })
+                toast.success('Postagem cadastrada com sucesso', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: false,
+                    theme: "colored",
+                    progress: undefined,
+                });
+            } catch (error) {
+                alert("Erro ao cadastrar, verifique os campos")
+            }
         }
         back()
     }
@@ -106,21 +141,34 @@ function CadastroPostagem() {
     function back() {
         navigate('/posts')
     }
-    
- 
+
     return (
         <Container maxWidth="sm" className="topo">
             <form onSubmit={onSubmit}>
                 <Typography variant="h3" color="textSecondary" component="h1" align="center" >Formulário de cadastro postagem</Typography>
-                <TextField value={postagem.titulo} onChange={(e: ChangeEvent<HTMLInputElement>) => updatedPostagem(e)} id="titulo" label="titulo" variant="outlined" name="titulo" margin="normal" fullWidth />
-                <TextField value={postagem.texto} onChange={(e: ChangeEvent<HTMLInputElement>) => updatedPostagem(e)} id="texto" label="texto" name="texto" variant="outlined" margin="normal" fullWidth />
 
-                <FormControl >
+                <TextField
+                    value={postagem.titulo}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => updatedPostagem(e)}
+                    id="titulo" label="titulo" variant="outlined"
+                    name="titulo" margin="normal" fullWidth
+                />
+
+                <TextField
+                    value={postagem.texto}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => updatedPostagem(e)}
+                    id="texto" label="texto" name="texto" variant="outlined"
+                    margin="normal" fullWidth
+                />
+
+                <FormControl>
                     <InputLabel id="demo-simple-select-helper-label">Tema </InputLabel>
+
                     <Select
                         labelId="demo-simple-select-helper-label"
                         id="demo-simple-select-helper"
-                            onChange={(e) => buscaId(`/temas/${e.target.value}`, setTema, {
+
+                        onChange={(e) => buscaId(`/temas/${e.target.value}`, setTema, {
                             headers: {
                                 'Authorization': token
                             }
@@ -133,7 +181,6 @@ function CadastroPostagem() {
                             ))
                         }
 
-                    
                     </Select>
                     <FormHelperText>Escolha um tema para a postagem</FormHelperText>
                     <Button type="submit" variant="contained" color="primary">
@@ -144,4 +191,5 @@ function CadastroPostagem() {
         </Container>
     )
 }
-export default CadastroPostagem;
+
+export default CadastroPostagem

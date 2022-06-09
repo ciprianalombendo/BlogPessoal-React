@@ -45,7 +45,7 @@ function Navbar() {
             </Box>
             
             
-            <Box display="flex" justifyContent="start">
+            <Box display="flex" justifyContent="start" marginLeft= "51%">
             <Link to='/home' className='text-decorator-none'> 
                 <Box mx={1}  className= 'cursor'>
                     <Typography variant="h6" color="inherit">
