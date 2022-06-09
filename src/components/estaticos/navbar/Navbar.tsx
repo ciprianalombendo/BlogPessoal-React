@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UserState } from '../../../store/tokens/userReducer';
 import { addToken } from '../../../store/tokens/action';
 import {toast} from 'react-toastify';
-import './NavBar.css'
+import './Navbar.css'
 
 function Navbar() {
 

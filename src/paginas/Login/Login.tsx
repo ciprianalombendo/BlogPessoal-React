@@ -16,6 +16,9 @@ function Login() {
     const dispatch = useDispatch()
     const [token, setToken] = useState('')
 
+    dispatch(addToken(token));
+
+
     const [userLogin, setUserLogin] = useState<UserLogin>({
         id: 0,
         nome: "",
@@ -24,22 +27,7 @@ function Login() {
         foto: "",
         token: ""
     })
-     // Crie mais um State para pegar os dados retornados a API
-     const [respUserLogin, setRespUserLogin] = useState<UserLogin>({
-        id: 0,
-        nome: '',
-        usuario: '',
-        senha: '',
-        token: '',
-        foto: ""
-    })
-
-    useEffect(() => {
-        if(token !== ""){
-            dispatch(addToken(token))
-            navigate('/home')
-        }
-    }, [token])
+     
 
     function updatedModel(e: ChangeEvent<HTMLInputElement>) {
         setUserLogin({
@@ -49,25 +37,19 @@ function Login() {
     }
 
     useEffect(() => {
-        if (respUserLogin.token !== "") {
-
-            // Verifica os dados pelo console (Opcional)
-            console.log("Token: " + respUserLogin.token)
-            console.log("ID: " + respUserLogin.id)
-
-            // Guarda as informações dentro do Redux (Store)
-            dispatch(addToken(respUserLogin.token))
-            dispatch(addId(respUserLogin.id.toString()))    // Faz uma conversão de Number para String
-            navigate('/home')
-        }
-    }, [respUserLogin.token])
+        if (token !== "") {
+            dispatch(addToken(token))
+            navigate("/home");
+          }
+        }, [token]);
+     
     async function onSubmit(e: ChangeEvent<HTMLFormElement>){
         e.preventDefault()
 
         try { 
             /* Se atente para a Rota de Logar, e também substitua o método
         setToken por setRespUserLogin */
-            await login(`/usuarios/logar`, userLogin, setRespUserLogin)
+            await login(`/usuarios/logar`, userLogin, setToken)
             toast.success('Usuário logado com sucesso!', {
                 position: "top-right",
                 autoClose: 2000,
