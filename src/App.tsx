@@ -5,7 +5,7 @@ import Navbar from './components/estaticos/navbar/Navbar';
 import Footer from './components/estaticos/footer/Footer';
 import CadastroUsuario from './paginas/cadastrousuario/CadastroUsuario';
 import Home from './paginas/home/Home';
-import Login from './paginas/login/Login';
+import Login from './paginas/Login/Login';
 import './App.css';
 import ListaTema from './components/temas/listatema/ListaTema';
 import ListaPostagem from './components/postagens/listapostagem/ListaPostagem';
